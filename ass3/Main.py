@@ -4,7 +4,7 @@ from ActionBox import ActionBox
 from ActionButton import ActionButton
 
 
-class MouseMovement:
+class Main:
     def __init__(self):
         self.win = tk.Tk()
         self.canvas = tk.Canvas(self.win, bg="#333333", width="1000", height="750")
@@ -67,5 +67,5 @@ class MouseMovement:
                 action.clicked = False  # set that the action is no longer clicked
 
 
-m = MouseMovement()
+m = Main()
 m.win.mainloop()
