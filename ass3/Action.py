@@ -18,3 +18,14 @@ class Action:
     def contains(self, x, y):
         return self.x - self.width / 2 < x < self.x + self.width / 2 and \
                self.y - self.height / 2 < y < self.y + self.height / 2
+
+    def run(self):
+        print("blue action")
+
+
+class MoveAction(Action):
+    def __init__(self, canvas, x, y, width, height, color):
+        super().__init__(canvas, x, y, width, height, color)
+
+    def run(self):
+        print("green action")
