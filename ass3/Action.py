@@ -29,6 +29,7 @@ class Action:
         #self.control.setTarget(1,6000)
         time.sleep(5)
         print("forward action")
+        print("Blue action")
 
 
 class MoveAction(Action):
