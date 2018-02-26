@@ -1,5 +1,5 @@
 class Action:
-    def __init__(self, canvas, x, y, width, height, color):
+    def __init__(self, canvas, x, y, width, height, color, text):
         self.x = x
         self.y = y
         self.width = width
@@ -7,10 +7,12 @@ class Action:
         self.clicked = False # if the action is currently clicked
         self.icon = canvas.create_rectangle(self.x - self.width / 2, self.y - self.height / 2, self.x + self.width / 2,
                                             self.y + self.height / 2, fill=color)
+        self.text = canvas.create_text(self.x, self.y, text=text)
 
     # move the action to the specified location
     def move(self, canvas, x, y):
         canvas.move(self.icon, x - self.x, y - self.y)
+        canvas.move(self.text, x - self.x, y - self.y)
         self.x = x
         self.y = y
 
@@ -24,8 +26,8 @@ class Action:
 
 
 class MoveAction(Action):
-    def __init__(self, canvas, x, y, width, height, color):
-        super().__init__(canvas, x, y, width, height, color)
+    def __init__(self, canvas, x, y, width, height, color, text):
+        super().__init__(canvas, x, y, width, height, color, text)
 
     def run(self):
         print("green action")
