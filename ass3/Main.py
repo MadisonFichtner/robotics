@@ -24,8 +24,10 @@ class Main:
                 ActionBox(self.canvas, 100 + i * (self.screenWidth - 100) / 8, self.screenHeight / 2, 100, 125))
 
         # buttons to pick up an action
-        self.buttons = [ActionButton(self.canvas, 75, 75, 100, 125, "#1568C5", 0, "Forward"),
-                        ActionButton(self.canvas, 175, 75, 100, 125, "#82C59E", 1, "Backward")]
+        self.buttons = [ActionButton(self.canvas, 75, 75, 100, 125, "#1568C5", 0, "Forward"), #blue
+                        ActionButton(self.canvas, 175, 75, 100, 125, "#82C59E", 1, "Backward"), #green
+                        ActionButton(self.canvas, 275, 75, 100, 125, "#ff0000", 2, "Left"),
+                        ActionButton(self.canvas, 375, 75, 100, 125, "#82bfc5", 2, "Right")] #red
         #self.canvas.create_text(self.buttons[0].x, self.buttons[0].y, text="Forward")
 
         # the actions for the robot to execute
@@ -51,6 +53,10 @@ class Main:
                 elif button.bType == 1:
                     action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125,
                                                button.color)  # create new action
+                elif button.bType == 2:
+                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color)
+                elif button.bType == 3:
+                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color)
                 action.clicked = True  # set that the action has been clicked
                 self.actions.append(action)  # add action to list
 

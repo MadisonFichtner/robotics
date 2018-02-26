@@ -8,6 +8,7 @@ class Action:
         self.width = width
         self.height = height
         self.clicked = False # if the action is currently clicked
+        self.color = color
         self.icon = canvas.create_rectangle(self.x - self.width / 2, self.y - self.height / 2, self.x + self.width / 2,
                                             self.y + self.height / 2, fill=color)
         #self.control = Controller()
@@ -27,15 +28,20 @@ class Action:
 
     def run(self):  #blue/forward action
         #self.control.setTarget(1,6000)
-        time.sleep(5)
-        print("forward action")
-        print("Blue action")
+        #time.sleep(5)
+        print("Forward Action")
 
 
 class MoveAction(Action):
     def __init__(self, canvas, x, y, width, height, color):
         super().__init__(canvas, x, y, width, height, color)
+        self.color = color
 
     def run(self):
-        time.sleep(5)
-        print("green action")
+        #time.sleep(5)
+        if self.color == "#82C59E":
+            print("Backward Action")
+        elif self.color == "#ff0000":
+            print("Left Action")
+        elif self.color == "#82bfc5":
+            print("Right Action")
