@@ -24,16 +24,17 @@ class Main:
                 ActionBox(self.canvas, 100 + i * (self.screenWidth - 100) / 8, self.screenHeight / 2, 100, 125))
 
         # buttons to pick up an action
-        self.buttons = [ActionButton(self.canvas, 75, 75, 100, 125, "#1568C5", 0),
-                        ActionButton(self.canvas, 175, 75, 100, 125, "#82C59E", 1)]
+        self.buttons = [ActionButton(self.canvas, 75, 75, 100, 125, "#1568C5", 0, "Forward"),
+                        ActionButton(self.canvas, 175, 75, 100, 125, "#82C59E", 1, "Backward")]
+        #self.canvas.create_text(self.buttons[0].x, self.buttons[0].y, text="Forward")
 
         # the actions for the robot to execute
         self.actions = []
 
         # button to start sequence
         self.startButton = ActionButton(self.canvas, self.screenWidth / 2, self.screenHeight - 100, 100, 50,
-                                        "#12FF1A", None)
-        self.canvas.create_text(self.startButton.x, self.startButton.y, text="Start")
+                                        "#12FF1A", None, "Start")
+        #self.canvas.create_text(self.startButton.x, self.startButton.y, text="Start")
 
     def run_program(self):
         for box in self.boxes:
