@@ -51,13 +51,11 @@ class Main:
                 if button.bType == 0:
                     action = Action.Action(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)  # create new action
                 elif button.bType == 1:
-                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125,
-                                               button.color)  # create new action
+                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)  # create new action
                 elif button.bType == 2:
-                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color)
+                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)
                 elif button.bType == 3:
-                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color)
-                                               button.color, button.textString)  # create new action
+                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)  # create new action
                 action.clicked = True  # set that the action has been clicked
                 self.actions.append(action)  # add action to list
 

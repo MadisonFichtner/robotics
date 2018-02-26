@@ -35,8 +35,8 @@ class Action:
 
 
 class MoveAction(Action):
-    def __init__(self, canvas, x, y, width, height, color):
-        super().__init__(canvas, x, y, width, height, color)
+    def __init__(self, canvas, x, y, width, height, color, text):
+        super().__init__(canvas, x, y, width, height, color, text)
         self.color = color
 
     def run(self):
