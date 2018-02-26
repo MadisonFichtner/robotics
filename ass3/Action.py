@@ -28,22 +28,54 @@ class Action:
         return self.x - self.width / 2 < x < self.x + self.width / 2 and \
                self.y - self.height / 2 < y < self.y + self.height / 2
 
-    def run(self):  #blue/forward action
+    #def run(self):  #blue/forward action
         #self.control.setTarget(1,6000)
         #time.sleep(5)
-        print("Forward Action")
+        #print("Forward Action")
 
 
 class MoveAction(Action):
     def __init__(self, canvas, x, y, width, height, color, text):
         super().__init__(canvas, x, y, width, height, color, text)
         self.color = color
+        self.namePlate = text #had to be different from text otherwise it broke
 
     def run(self):
         #time.sleep(5)
-        if self.color == "#82C59E":
-            print("Backward Action")
-        elif self.color == "#ff0000":
-            print("Left Action")
-        elif self.color == "#82bfc5":
-            print("Right Action")
+        if self.namePlate == "Move Forward":
+            print("Move Forward")
+        elif self.namePlate == "Move Backward":
+            print("Move Backward")
+        elif self.namePlate == "Turn Left":
+            print("Turn Left")
+        elif self.namePlate == "Turn Right":
+            print("Turn Right")
+
+
+class BodyAction(Action):
+    def __init__(self, canvas, x, y, width, height, color, text):
+        super().__init__(canvas, x, y, width, height, color, text)
+        self.color = color
+        self.namePlate = text #had to be different from text otherwise it broke
+
+    def run(self):
+        if self.namePlate == "Turn Body Right":
+            print("Turn Body Right")
+        elif self.namePlate == "Turn Body Left":
+            print("Turn Body Left")
+
+class HeadAction(Action):
+    def __init__(self, canvas, x, y, width, height, color, text):
+        super().__init__(canvas, x, y, width, height, color, text)
+        self.color = color
+        self.namePlate = text #had to be different from text otherwise it broke
+
+    def run(self):
+        if self.namePlate == "Turn Head Right":
+            print ("Turn Head Right")
+        elif self.namePlate == "Turn Head Left":
+            print ("Turn Head Left")
+        elif self.namePlate == "Tilt Head Up":
+            print ("Tilt Head Up")
+        elif self.namePlate == "Tilt Head Down":
+            print ("Tile Head Down")
