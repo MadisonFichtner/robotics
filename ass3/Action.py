@@ -1,3 +1,6 @@
+#from Maestro import Controller
+import time
+
 class Action:
     def __init__(self, canvas, x, y, width, height, color, text):
         self.x = x
@@ -5,8 +8,11 @@ class Action:
         self.width = width
         self.height = height
         self.clicked = False # if the action is currently clicked
+        self.color = color
         self.icon = canvas.create_rectangle(self.x - self.width / 2, self.y - self.height / 2, self.x + self.width / 2,
                                             self.y + self.height / 2, fill=color)
+        #self.control = Controller()
+        #self.control.setTarget(1,6000)
         self.text = canvas.create_text(self.x, self.y, text=text)
 
     # move the action to the specified location
@@ -16,18 +22,28 @@ class Action:
         self.x = x
         self.y = y
 
+
     # return if the given coordinates are within the action icon
     def contains(self, x, y):
         return self.x - self.width / 2 < x < self.x + self.width / 2 and \
                self.y - self.height / 2 < y < self.y + self.height / 2
 
-    def run(self):
-        print("blue action")
+    def run(self):  #blue/forward action
+        #self.control.setTarget(1,6000)
+        #time.sleep(5)
+        print("Forward Action")
 
 
 class MoveAction(Action):
-    def __init__(self, canvas, x, y, width, height, color, text):
-        super().__init__(canvas, x, y, width, height, color, text)
+    def __init__(self, canvas, x, y, width, height, color):
+        super().__init__(canvas, x, y, width, height, color)
+        self.color = color
 
     def run(self):
-        print("green action")
+        #time.sleep(5)
+        if self.color == "#82C59E":
+            print("Backward Action")
+        elif self.color == "#ff0000":
+            print("Left Action")
+        elif self.color == "#82bfc5":
+            print("Right Action")
