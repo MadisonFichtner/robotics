@@ -1,6 +1,5 @@
 class ActionButton:
-    def __init__(self, canvas, x, y, width, height, color, b_type, name):
-        self.canvas = canvas
+    def __init__(self, canvas, x, y, width, height, color, b_type, text):
         self.x = x
         self.y = y
         self.width = width
@@ -11,6 +10,10 @@ class ActionButton:
         self.icon = canvas.create_rectangle(self.x - self.width / 2, self.y - self.height / 2, self.x + self.width / 2,
                                             self.y + self.height / 2, fill=color)
         canvas.create_text(self.x, self.y, text=name)
+        self.textString = text
+        self.icon = canvas.create_rectangle(self.x - self.width / 2, self.y - self.height / 2, self.x + self.width / 2,
+                                            self.y + self.height / 2, fill=color)
+        self.text = canvas.create_text(self.x, self.y, text=text)
 
     # return if the given coordinates are within the button
     def contains(self, x, y):

@@ -2,7 +2,7 @@
 import time
 
 class Action:
-    def __init__(self, canvas, x, y, width, height, color):
+    def __init__(self, canvas, x, y, width, height, color, text):
         self.x = x
         self.y = y
         self.width = width
@@ -13,10 +13,12 @@ class Action:
                                             self.y + self.height / 2, fill=color)
         #self.control = Controller()
         #self.control.setTarget(1,6000)
+        self.text = canvas.create_text(self.x, self.y, text=text)
 
     # move the action to the specified location
     def move(self, canvas, x, y):
         canvas.move(self.icon, x - self.x, y - self.y)
+        canvas.move(self.text, x - self.x, y - self.y)
         self.x = x
         self.y = y
 

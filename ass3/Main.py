@@ -36,7 +36,7 @@ class Main:
         # button to start sequence
         self.startButton = ActionButton(self.canvas, self.screenWidth / 2, self.screenHeight - 100, 100, 50,
                                         "#12FF1A", None, "Start")
-        #self.canvas.create_text(self.startButton.x, self.startButton.y, text="Start")
+
 
     def run_program(self):
         for box in self.boxes:
@@ -49,7 +49,7 @@ class Main:
             # check if the button has been clicked on
             if button.contains(event.x, event.y):
                 if button.bType == 0:
-                    action = Action.Action(self.canvas, button.x, button.y, 100, 125, button.color)  # create new action
+                    action = Action.Action(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)  # create new action
                 elif button.bType == 1:
                     action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125,
                                                button.color)  # create new action
@@ -57,6 +57,7 @@ class Main:
                     action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color)
                 elif button.bType == 3:
                     action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color)
+                                               button.color, button.textString)  # create new action
                 action.clicked = True  # set that the action has been clicked
                 self.actions.append(action)  # add action to list
 
@@ -93,6 +94,7 @@ class Main:
 
                 if not placed:
                     self.canvas.delete(action.icon)  # delete action if not in box
+                    self.canvas.delete(action.text)
                     self.actions.remove(action)
                 action.clicked = False  # set that the action is no longer clicked
 
