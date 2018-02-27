@@ -6,8 +6,8 @@ from ActionButton import ActionButton
 
 class Main:
     def __init__(self):
-        self.screenWidth = 1000
-        self.screenHeight = 750
+        self.screenWidth = 1200
+        self.screenHeight = 800
 
         self.win = tk.Tk()
         self.canvas = tk.Canvas(self.win, bg="#333333", width=str(self.screenWidth), height=str(self.screenHeight))
@@ -21,13 +21,19 @@ class Main:
         self.boxes = []
         for i in range(8):
             self.boxes.append(
-                ActionBox(self.canvas, 100 + i * (self.screenWidth - 100) / 8, self.screenHeight / 2, 100, 125))
+                ActionBox(self.canvas, 100 + i * (self.screenWidth - 75) / 8, self.screenHeight / 2, 100, 125))
 
         # buttons to pick up an action
-        self.buttons = [ActionButton(self.canvas, 75, 75, 100, 125, "#1568C5", 0, "Forward"), #blue
-                        ActionButton(self.canvas, 175, 75, 100, 125, "#82C59E", 1, "Backward"), #green
-                        ActionButton(self.canvas, 275, 75, 100, 125, "#ff0000", 2, "Left"),
-                        ActionButton(self.canvas, 375, 75, 100, 125, "#82bfc5", 2, "Right")] #red
+        self.buttons = [ActionButton(self.canvas, 100, 150, 100, 125, "#1568C5", 0, "Move Forward"),
+                        ActionButton(self.canvas, 210, 150, 100, 125, "#1568C5", 0, "Move Backward"),
+                        ActionButton(self.canvas, 320, 150, 100, 125, "#ff0000", 0, "Turn Left"),
+                        ActionButton(self.canvas, 430, 150, 100, 125, "#ff0000", 0, "Turn Right"),
+                        ActionButton(self.canvas, 540, 150, 100, 125, "#ffffff", 1, "Turn Body Right"),
+                        ActionButton(self.canvas, 650, 150, 100, 125, "#ffffff", 1, "Turn Body Left"),
+                        ActionButton(self.canvas, 760, 150, 100, 125, "#cc0099", 2, "Turn Head Right"),
+                        ActionButton(self.canvas, 870, 150, 100, 125, "#cc0099", 2, "Turn Head Left"),
+                        ActionButton(self.canvas, 980, 150, 100, 125, "#ffff00", 2, "Tilt Head Up"),
+                        ActionButton(self.canvas, 1090, 150, 100, 125, "#ffff00", 2, "Tilt Head Down")]
         #self.canvas.create_text(self.buttons[0].x, self.buttons[0].y, text="Forward")
 
         # the actions for the robot to execute
@@ -48,14 +54,16 @@ class Main:
         for button in self.buttons:
             # check if the button has been clicked on
             if button.contains(event.x, event.y):
+                #if button.bType == 0:
+                #    action = Action.Action(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)  # create new action
+                #else:
                 if button.bType == 0:
-                    action = Action.Action(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)  # create new action
+                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)  # create new action
                 elif button.bType == 1:
-                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)  # create new action
+                    action = Action.BodyAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)
                 elif button.bType == 2:
-                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)
-                elif button.bType == 3:
-                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)  # create new action
+                    action = Action.HeadAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)
+
                 action.clicked = True  # set that the action has been clicked
                 self.actions.append(action)  # add action to list
 
