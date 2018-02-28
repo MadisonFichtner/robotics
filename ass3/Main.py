@@ -34,7 +34,7 @@ class Main:
                         ActionButton(self.canvas, 870, 150, 100, 125, "#cc0099", 2, "Turn Head Left"),
                         ActionButton(self.canvas, 980, 150, 100, 125, "#ffff00", 2, "Tilt Head Up"),
                         ActionButton(self.canvas, 1090, 150, 100, 125, "#ffff00", 2, "Tilt Head Down")]
-        #self.canvas.create_text(self.buttons[0].x, self.buttons[0].y, text="Forward")
+        # self.canvas.create_text(self.buttons[0].x, self.buttons[0].y, text="Forward")
 
         # the actions for the robot to execute
         self.actions = []
@@ -42,7 +42,6 @@ class Main:
         # button to start sequence
         self.startButton = ActionButton(self.canvas, self.screenWidth / 2, self.screenHeight - 100, 100, 50,
                                         "#12FF1A", None, "Start")
-
 
     def run_program(self):
         for box in self.boxes:
@@ -54,28 +53,33 @@ class Main:
         for button in self.buttons:
             # check if the button has been clicked on
             if button.contains(event.x, event.y):
-                #if button.bType == 0:
-                #    action = Action.Action(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)  # create new action
-                #else:
                 if button.bType == 0:
-                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)  # create new action
+                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color,
+                                               button.textString)  # create new action
                 elif button.bType == 1:
-                    action = Action.BodyAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)
+                    action = Action.BodyAction(self.canvas, button.x, button.y, 100, 125, button.color,
+                                               button.textString)
                 elif button.bType == 2:
-                    action = Action.HeadAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)
+                    action = Action.HeadAction(self.canvas, button.x, button.y, 100, 125, button.color,
+                                               button.textString)
 
                 action.clicked = True  # set that the action has been clicked
                 self.actions.append(action)  # add action to list
 
         for action in self.actions:
             # check if the action has been clicked on
-            if action.contains(event.x, event.y):
+            click_location = action.click_location(event.x, event.y)
+            if click_location == 3:
                 action.clicked = True  # set that the action is clicked
 
                 for box in self.boxes:
                     # check if an action within the box has been clicked
                     if box.contains(event.x, event.y):
                         box.action = None  # set the box is no longer filled
+            elif click_location == 1:   # if the up button is clicked
+                action.change_setting(1, self.canvas)
+            elif click_location == 2:   # if the down button is clicked
+                action.change_setting(0, self.canvas)
 
         # if the play button was pressed
         if self.startButton.contains(event.x, event.y):
@@ -99,8 +103,7 @@ class Main:
                         placed = True
 
                 if not placed:
-                    self.canvas.delete(action.icon)  # delete action if not in box
-                    self.canvas.delete(action.text)
+                    action.destroy(self.canvas)  # delete action if not in box
                     self.actions.remove(action)
                 action.clicked = False  # set that the action is no longer clicked
 
