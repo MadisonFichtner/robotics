@@ -28,10 +28,10 @@ class Main:
                         ActionButton(self.canvas, 210, 150, 100, 125, "#1568C5", 0, "Move Backward"),
                         ActionButton(self.canvas, 320, 150, 100, 125, "#ff0000", 0, "Turn Left"),
                         ActionButton(self.canvas, 430, 150, 100, 125, "#ff0000", 0, "Turn Right"),
-                        ActionButton(self.canvas, 540, 150, 100, 125, "#ffffff", 1, "Turn Body Right"),
-                        ActionButton(self.canvas, 650, 150, 100, 125, "#ffffff", 1, "Turn Body Left"),
-                        ActionButton(self.canvas, 760, 150, 100, 125, "#cc0099", 2, "Turn Head Right"),
-                        ActionButton(self.canvas, 870, 150, 100, 125, "#cc0099", 2, "Turn Head Left"),
+                        ActionButton(self.canvas, 540, 150, 100, 125, "#ffffff", 1, "Turn Body Left"),
+                        ActionButton(self.canvas, 650, 150, 100, 125, "#ffffff", 1, "Turn Body Right"),
+                        ActionButton(self.canvas, 760, 150, 100, 125, "#cc0099", 2, "Turn Head Left"),
+                        ActionButton(self.canvas, 870, 150, 100, 125, "#cc0099", 2, "Turn Head Right"),
                         ActionButton(self.canvas, 980, 150, 100, 125, "#ffff00", 2, "Tilt Head Up"),
                         ActionButton(self.canvas, 1090, 150, 100, 125, "#ffff00", 2, "Tilt Head Down")]
         # self.canvas.create_text(self.buttons[0].x, self.buttons[0].y, text="Forward")

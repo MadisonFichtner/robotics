@@ -136,4 +136,4 @@ class HeadAction(Action):
         elif self.namePlate == "Tilt Head Up":
             print("Tilt Head Up")
         elif self.namePlate == "Tilt Head Down":
-            print("Tile Head Down")
+            print("Tilt Head Down")
