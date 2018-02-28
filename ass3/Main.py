@@ -6,8 +6,8 @@ from ActionButton import ActionButton
 
 class Main:
     def __init__(self):
-        self.screenWidth = 1200
-        self.screenHeight = 800
+        self.screenWidth = 800
+        self.screenHeight = 480
 
         self.win = tk.Tk()
         self.canvas = tk.Canvas(self.win, bg="#333333", width=str(self.screenWidth), height=str(self.screenHeight))
@@ -21,61 +21,71 @@ class Main:
         self.boxes = []
         for i in range(8):
             self.boxes.append(
-                ActionBox(self.canvas, 100 + i * (self.screenWidth - 75) / 8, self.screenHeight / 2, 100, 125))
+                ActionBox(self.canvas, 75 + i * (self.screenWidth - 50) / 8, self.screenHeight / 1.5, 100, 125))
 
+        buttonWidth = ((self.screenWidth) / 10)
         # buttons to pick up an action
-        self.buttons = [ActionButton(self.canvas, 100, 150, 100, 125, "#1568C5", 0, "Move Forward"),
-                        ActionButton(self.canvas, 210, 150, 100, 125, "#1568C5", 0, "Move Backward"),
-                        ActionButton(self.canvas, 320, 150, 100, 125, "#ff0000", 0, "Turn Left"),
-                        ActionButton(self.canvas, 430, 150, 100, 125, "#ff0000", 0, "Turn Right"),
-                        ActionButton(self.canvas, 540, 150, 100, 125, "#ffffff", 1, "Turn Body Right"),
-                        ActionButton(self.canvas, 650, 150, 100, 125, "#ffffff", 1, "Turn Body Left"),
-                        ActionButton(self.canvas, 760, 150, 100, 125, "#cc0099", 2, "Turn Head Right"),
-                        ActionButton(self.canvas, 870, 150, 100, 125, "#cc0099", 2, "Turn Head Left"),
-                        ActionButton(self.canvas, 980, 150, 100, 125, "#ffff00", 2, "Tilt Head Up"),
-                        ActionButton(self.canvas, 1090, 150, 100, 125, "#ffff00", 2, "Tilt Head Down")]
-        #self.canvas.create_text(self.buttons[0].x, self.buttons[0].y, text="Forward")
+        self.buttons = [ActionButton(self.canvas, buttonWidth / 2, 100, buttonWidth, 125, "#1568C5", 0, "Move Forward"),
+                        ActionButton(self.canvas, buttonWidth / 2 + buttonWidth, 100, buttonWidth, 125, "#1568C5", 0, "Move Backward"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 2), 100, buttonWidth, 125, "#ff0000", 0, "Turn Left"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 3), 100, buttonWidth, 125, "#ff0000", 0, "Turn Right"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 4), 100, buttonWidth, 125, "#ffffff", 1, "Turn Body Left"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 5), 100, buttonWidth, 125, "#ffffff", 1, "Turn Body Right"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 6), 100, buttonWidth, 125, "#cc0099", 2, "Turn Head Left"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 7), 100, buttonWidth, 125, "#cc0099", 2, "Turn Head Right"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 8), 100, buttonWidth, 125, "#ffff00", 2, "Tilt Head Up"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 9), 100, buttonWidth, 125, "#ffff00", 2, "Tilt Head Down")]
+        # self.canvas.create_text(self.buttons[0].x, self.buttons[0].y, text="Forward")
 
         # the actions for the robot to execute
         self.actions = []
 
         # button to start sequence
-        self.startButton = ActionButton(self.canvas, self.screenWidth / 2, self.screenHeight - 100, 100, 50,
+        self.startButton = ActionButton(self.canvas, self.screenWidth / 2, self.screenHeight - 50, 100, 50,
                                         "#12FF1A", None, "Start")
-
 
     def run_program(self):
         for box in self.boxes:
             if box.action is not None:
-                box.action.run()
+                box.action.set_active(self.canvas, True)  # set the action to be active
+                box.action.run()        # run action
+
+        for box in self.boxes:
+            if box.action is not None:
+                box.action.set_active(self.canvas, False)  # set all actions to inactive
         print()
 
     def mouse_pressed(self, event):
         for button in self.buttons:
             # check if the button has been clicked on
             if button.contains(event.x, event.y):
-                #if button.bType == 0:
-                #    action = Action.Action(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)  # create new action
-                #else:
                 if button.bType == 0:
-                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)  # create new action
+                    action = Action.MoveAction(self.canvas, button.x, button.y, 100, 125, button.color,
+                                               button.textString)  # create new action
                 elif button.bType == 1:
-                    action = Action.BodyAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)
+                    action = Action.BodyAction(self.canvas, button.x, button.y, 100, 125, button.color,
+                                               button.textString)
                 elif button.bType == 2:
-                    action = Action.HeadAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)
+                    action = Action.HeadAction(self.canvas, button.x, button.y, 100, 125, button.color,
+                                               button.textString)
 
                 action.clicked = True  # set that the action has been clicked
                 self.actions.append(action)  # add action to list
 
         for action in self.actions:
             # check if the action has been clicked on
-            if action.contains(event.x, event.y):
+            click_location = action.click_location(event.x, event.y)
+            if click_location == 3:
                 action.clicked = True  # set that the action is clicked
 
                 for box in self.boxes:
                     # check if an action within the box has been clicked
                     if box.contains(event.x, event.y):
                         box.action = None  # set the box is no longer filled
+            elif click_location == 1 and not action.clicked:   # if the up button is clicked
+                action.change_setting(1, self.canvas)
+            elif click_location == 2 and not action.clicked:   # if the down button is clicked
+                action.change_setting(0, self.canvas)
 
         # if the play button was pressed
         if self.startButton.contains(event.x, event.y):
@@ -99,8 +109,7 @@ class Main:
                         placed = True
 
                 if not placed:
-                    self.canvas.delete(action.icon)  # delete action if not in box
-                    self.canvas.delete(action.text)
+                    action.destroy(self.canvas)  # delete action if not in box
                     self.actions.remove(action)
                 action.clicked = False  # set that the action is no longer clicked
 
