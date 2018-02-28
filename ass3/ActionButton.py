@@ -7,7 +7,7 @@ class ActionButton:
         self.color = color
         self.bType = b_type
         self.icon = canvas.create_rectangle(self.x - self.width / 2, self.y - self.height / 2, self.x + self.width / 2,
-                                            self.y + self.height / 2, fill=color)
+                                            self.y + self.height / 2, fill=color, width=5)
         self.textString = text
         self.text = canvas.create_text(self.x, self.y, text=text)
 

@@ -11,7 +11,7 @@ class Action:
         self.clicked = False  # if the action is currently clicked
         self.color = color  # color of action rectangle
         self.icon = canvas.create_rectangle(self.x - self.width / 2, self.y - self.height / 2, self.x + self.width / 2,
-                                            self.y + self.height / 2, fill=color)
+                                            self.y + self.height / 2, fill=color, width=5)
         self.text = canvas.create_text(self.x, self.y - 7, text=text)  # name of action
         self.label = None  # shows current setting
         self.setting = 0  # how long or how many degrees to do action for
