@@ -25,7 +25,7 @@ class Action:
                                               fill='black')  # up button for adjusting setting
         self.buttonDown = canvas.create_polygon(self.x - 20, self.y + 20, self.x + 20, self.y + 20, self.x, self.y + 50,
                                                 fill='black')  # down button for adjusting setting
-        # self.control = Controller()
+        self.control = Controller()
         # self.control.setTarget(1,6000)
 
     # move the action to the specified location

@@ -31,7 +31,7 @@ class Controller:
     def __init__(self,ttyStr='/dev/ttyACM0',device=0x0c):
         # Open the command port
 
-        #self.usb = serial.Serial(ttyStr)
+        self.usb = serial.Serial(ttyStr)
 
         # Command lead-in and device number are sent for each Pololu serial command.
         self.PololuCmd = chr(0xaa) + chr(device)
