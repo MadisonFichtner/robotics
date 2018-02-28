@@ -76,9 +76,9 @@ class Main:
                     # check if an action within the box has been clicked
                     if box.contains(event.x, event.y):
                         box.action = None  # set the box is no longer filled
-            elif click_location == 1:   # if the up button is clicked
+            elif click_location == 1 and not action.clicked:   # if the up button is clicked
                 action.change_setting(1, self.canvas)
-            elif click_location == 2:   # if the down button is clicked
+            elif click_location == 2 and not action.clicked:   # if the down button is clicked
                 action.change_setting(0, self.canvas)
 
         # if the play button was pressed
