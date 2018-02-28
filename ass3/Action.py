@@ -9,18 +9,20 @@ class Action:
         self.width = width
         self.height = height
         self.clicked = False  # if the action is currently clicked
-        self.color = color
+        self.color = color  # color of action rectangle
         self.icon = canvas.create_rectangle(self.x - self.width / 2, self.y - self.height / 2, self.x + self.width / 2,
                                             self.y + self.height / 2, fill=color)
-        self.text = canvas.create_text(self.x, self.y - 7, text=text)
-        self.label = None
+        self.text = canvas.create_text(self.x, self.y - 7, text=text)  # name of action
+        self.label = None  # shows current setting
         self.setting = 0  # how long or how many degrees to do action for
         self.settingStep = 0  # how much to decrease or increase setting per button press
         self.settingType = None  # duration or degrees
+        self.settingMin = 0  # minimum setting
+        self.settingMax = 0  # maximum setting
         self.buttonUp = canvas.create_polygon(self.x - 20, self.y - 20, self.x + 20, self.y - 20, self.x, self.y - 50,
-                                              fill='black')
+                                              fill='black')  # up button for adjusting setting
         self.buttonDown = canvas.create_polygon(self.x - 20, self.y + 20, self.x + 20, self.y + 20, self.x, self.y + 50,
-                                                fill='black')
+                                                fill='black')  # down button for adjusting setting
         # self.control = Controller()
         # self.control.setTarget(1,6000)
 
@@ -41,13 +43,11 @@ class Action:
     # 3 = rest of box
     def click_location(self, x, y):
         if self.x - 20 < x < self.x + 20 and self.y - 50 < y < self.y - 20:  # if up arrow clicked
-            print("pressed up")
             return 1
         elif self.x - 20 < x < self.x + 20 and self.y + 20 < y < self.y + 50:  # if down arrow clicked
-            print("pressed down")
             return 2
         elif self.x - self.width / 2 < x < self.x + self.width / 2 and \
-                                        self.y - self.height / 2 < y < self.y + self.height / 2:  # if rest of box clicked
+                                        self.y - self.height / 2 < y < self.y + self.height / 2:  # if rest clicked
             return 3
 
         return 0  # if not clicked
@@ -56,9 +56,9 @@ class Action:
     # if direction = 0 => decrease
     # if direction = 1 => increase
     def change_setting(self, direction, canvas):
-        if direction == 0:
+        if direction == 0 and self.setting - self.settingStep >= self.settingMin:
             self.setting -= self.settingStep  # decrease setting
-        elif direction == 1:
+        elif direction == 1 and self.setting + self.settingStep <= self.settingMax:
             self.setting += self.settingStep  # increase setting
 
         canvas.delete(self.label)  # delete old label
@@ -81,6 +81,8 @@ class MoveAction(Action):
         self.setting = 1.0
         self.settingStep = 0.25
         self.settingType = "seconds"
+        self.settingMin = self.settingStep
+        self.settingMax = 10
         self.label = canvas.create_text(self.x, self.y + 7, text=str(self.setting) + " " + self.settingType)
 
     def run(self):
@@ -103,6 +105,8 @@ class BodyAction(Action):
         self.setting = 30
         self.settingStep = 5
         self.settingType = "degrees"
+        self.settingMin = 0
+        self.settingMax = 90
         self.label = canvas.create_text(self.x, self.y + 7, text=str(self.setting) + " " + self.settingType)
 
     def run(self):
@@ -120,6 +124,8 @@ class HeadAction(Action):
         self.setting = 30
         self.settingStep = 5
         self.settingType = "degrees"
+        self.settingMin = 0
+        self.settingMax = 90
         self.label = canvas.create_text(self.x, self.y + 7, text=str(self.setting) + " " + self.settingType)
 
     def run(self):
