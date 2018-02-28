@@ -6,8 +6,8 @@ from ActionButton import ActionButton
 
 class Main:
     def __init__(self):
-        self.screenWidth = 800
-        self.screenHeight = 480
+        self.screenWidth = 770
+        self.screenHeight = 460
 
         self.win = tk.Tk()
         self.canvas = tk.Canvas(self.win, bg="#333333", width=str(self.screenWidth), height=str(self.screenHeight))
@@ -21,7 +21,7 @@ class Main:
         self.boxes = []
         for i in range(8):
             self.boxes.append(
-                ActionBox(self.canvas, 75 + i * (self.screenWidth - 50) / 8, self.screenHeight / 1.5, 100, 125))
+                ActionBox(self.canvas, 50 + i * (self.screenWidth / 8), self.screenHeight / 1.5, 100, 125))
 
         buttonWidth = ((self.screenWidth) / 10)
         # buttons to pick up an action
