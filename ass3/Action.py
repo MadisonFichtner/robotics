@@ -106,17 +106,28 @@ class MoveAction(Action):
         self.label = canvas.create_text(self.x, self.y + 7, text=str(self.setting) + " " + self.settingType)
 
     def run(self):
-        time.sleep(self.setting)
+        time.sleep(.5)
         if self.namePlate == "Move Forward":
-            self.control.setTarget(1, 6500)
-            time.sleep(2)
+            self.control.setTarget(1, 4500)
+            time.sleep(self.setting)
             self.control.setTarget(1, 6000)
             print("Move Forward")
         elif self.namePlate == "Move Backward":
+            self.control.setTarget(1, 7500)
+            time.sleep(self.setting)
+            self.control.setTarget(1, 6000)
             print("Move Backward")
         elif self.namePlate == "Turn Left":
+            self.control.setTarget(1, 6000)
+            self.control.setTarget(2, 7000)
+            time.sleep(self.setting)
+            self.control.setTarget(2, 6000)
             print("Turn Left")
         elif self.namePlate == "Turn Right":
+            self.control.setTarget(1, 6000)
+            self.control.setTarget(2, 5000)
+            time.sleep(self.setting)
+            self.control.setTarget(2, 6000)
             print("Turn Right")
 
 
@@ -133,14 +144,17 @@ class BodyAction(Action):
         self.label = canvas.create_text(self.x, self.y + 7, text=str(self.setting) + " " + self.settingType)
 
     def run(self):
-        if self.namePlate == "Turn Body Right":
+        if self.setting == 0:
+            self.control.setTarget(0, 6000)
+            time.sleep(1)
+        elif self.namePlate == "Turn Body Right":
+            self.control.setTarget(0, 4500)
+            time.sleep(1)
             print("Turn Body Right")
         elif self.namePlate == "Turn Body Left":
             self.control.setTarget(0, 7500)
             time.sleep(1)
-            self.control.setTarget(0, 6000)
             print("Turn Body Left")
-
 
 class HeadAction(Action):
     def __init__(self, canvas, x, y, width, height, color, text):
@@ -155,11 +169,23 @@ class HeadAction(Action):
         self.label = canvas.create_text(self.x, self.y + 7, text=str(self.setting) + " " + self.settingType)
 
     def run(self):
-        if self.namePlate == "Turn Head Right":
-            print("Turn Head Right")
-        elif self.namePlate == "Turn Head Left":
-            print("Turn Head Left")
-        elif self.namePlate == "Tilt Head Up":
-            print("Tilt Head Up")
-        elif self.namePlate == "Tilt Head Down":
-            print("Tilt Head Down")
+        if self.namePlate == "Turn Head Right" or self.namePlate == "Turn Head Left":
+            if self.setting == 0:
+                self.control.setTarget(3, 6000)
+            elif self.namePlate == "Turn Head Right":
+                self.control.setTarget(3, 4500)
+                print("Turn Head Right")
+            elif self.namePlate == "Turn Head Left":
+                self.control.setTarget(3, 7500)
+                print("Turn Head Left")
+            time.sleep(1)
+        else:
+            if self.setting == 0:
+                self.control.setTarget(4, 5000)
+            elif self.namePlate == "Tilt Head Up":
+                self.control.setTarget(4, 6500)
+                print("Tilt Head Up")
+            elif self.namePlate == "Tilt Head Down":
+                self.control.setTarget(4, 3500)
+                print("Tilt Head Down")
+            time.sleep(1)
