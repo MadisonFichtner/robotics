@@ -1,5 +1,4 @@
-
-#import serial
+import serial
 from sys import version_info
 
 PY2 = version_info[0] == 2   #Running Python 2.x?
@@ -46,15 +45,15 @@ class Controller:
 
     # Cleanup by closing USB serial port
     def close(self):
-        #self.usb.close()
+        self.usb.close()
 
     # Send a Pololu command out the serial port
     def sendCmd(self, cmd):
         cmdStr = self.PololuCmd + cmd
         if PY2:
-            #self.usb.write(cmdStr)
+            self.usb.write(cmdStr)
         else:
-            #self.usb.write(bytes(cmdStr,'latin-1'))
+            self.usb.write(bytes(cmdStr,'latin-1'))
 
     # Set channels min and max value range.  Use this as a safety to protect
     # from accidentally moving outside known safe parameters. A setting of 0
@@ -128,8 +127,7 @@ class Controller:
     def getPosition(self, chan):
         cmd = chr(0x10) + chr(chan)
         self.sendCmd(cmd)
-        #lsb = ord(self.usb.read())
-        #
+        lsb = ord(self.usb.read())
         msb = ord(self.usb.read())
         return (msb << 8) + lsb
 
