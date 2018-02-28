@@ -26,7 +26,7 @@ class Action:
         self.buttonDown = canvas.create_polygon(self.x - 20, self.y + 20, self.x + 20, self.y + 20, self.x, self.y + 50,
                                                 fill='black')  # down button for adjusting setting
         self.control = Controller()
-        # self.control.setTarget(1,6000)
+        self.control.setTarget(1,6000)
 
     # move the action to the specified location
     def move(self, canvas, x, y):
@@ -108,6 +108,9 @@ class MoveAction(Action):
     def run(self):
         time.sleep(self.setting)
         if self.namePlate == "Move Forward":
+            self.control.setTarget(1, 6500)
+            time.sleep(2)
+            self.control.setTarget(1, 6000)
             print("Move Forward")
         elif self.namePlate == "Move Backward":
             print("Move Backward")
@@ -134,7 +137,7 @@ class BodyAction(Action):
             print("Turn Body Right")
         elif self.namePlate == "Turn Body Left":
             self.control.setTarget(0, 7500)
-            time.sleep(5)
+            time.sleep(1)
             self.control.setTarget(0, 6000)
             print("Turn Body Left")
 
