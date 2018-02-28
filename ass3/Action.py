@@ -1,4 +1,5 @@
-# from Maestro import Controller
+from Maestro import Controller
+
 import time
 
 
@@ -132,6 +133,9 @@ class BodyAction(Action):
         if self.namePlate == "Turn Body Right":
             print("Turn Body Right")
         elif self.namePlate == "Turn Body Left":
+            self.control.setTarget(0, 7500)
+            time.sleep(5)
+            self.control.setTarget(0, 6000)
             print("Turn Body Left")
 
 

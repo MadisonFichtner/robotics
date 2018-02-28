@@ -7,7 +7,7 @@ from ActionButton import ActionButton
 class Main:
     def __init__(self):
         self.screenWidth = 800
-        self.screenHeight =480
+        self.screenHeight = 480
 
         self.win = tk.Tk()
         self.canvas = tk.Canvas(self.win, bg="#333333", width=str(self.screenWidth), height=str(self.screenHeight))
@@ -21,27 +21,27 @@ class Main:
         self.boxes = []
         for i in range(8):
             self.boxes.append(
-                ActionBox(self.canvas, 50 + i * (self.screenWidth - 37) / 8, self.screenHeight / 2, 50, 63))
-	
-        buttonWidth = (self.screenWidth - 10 / 10)
+                ActionBox(self.canvas, 75 + i * (self.screenWidth - 50) / 8, self.screenHeight / 1.5, 100, 125))
+
+        buttonWidth = ((self.screenWidth) / 10)
         # buttons to pick up an action
-        self.buttons = [ActionButton(self.canvas, buttonWidth / 2, 150, 75, 125, "#1568C5", 0, "Move Forward"),
-                        ActionButton(self.canvas, buttonWidth / 2 + buttonWidth, 150, 75, 125, "#1568C5", 0, "Move Backward"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 2), 150, 75, 125, "#ff0000", 0, "Turn Left"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 3), 150, 75, 125, "#ff0000", 0, "Turn Right"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 4), 150, 75, 125, "#ffffff", 1, "Turn Body Left"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 4), 150, 75, 125, "#ffffff", 1, "Turn Body Right"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 5), 150, 75, 125, "#cc0099", 2, "Turn Head Left"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 6), 150, 75, 125, "#cc0099", 2, "Turn Head Right"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 7), 150, 75, 125, "#ffff00", 2, "Tilt Head Up"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 8), 150, 75, 125, "#ffff00", 2, "Tilt Head Down")]
+        self.buttons = [ActionButton(self.canvas, buttonWidth / 2, 100, buttonWidth, 125, "#1568C5", 0, "Move Forward"),
+                        ActionButton(self.canvas, buttonWidth / 2 + buttonWidth, 100, buttonWidth, 125, "#1568C5", 0, "Move Backward"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 2), 100, buttonWidth, 125, "#ff0000", 0, "Turn Left"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 3), 100, buttonWidth, 125, "#ff0000", 0, "Turn Right"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 4), 100, buttonWidth, 125, "#ffffff", 1, "Turn Body Left"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 5), 100, buttonWidth, 125, "#ffffff", 1, "Turn Body Right"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 6), 100, buttonWidth, 125, "#cc0099", 2, "Turn Head Left"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 7), 100, buttonWidth, 125, "#cc0099", 2, "Turn Head Right"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 8), 100, buttonWidth, 125, "#ffff00", 2, "Tilt Head Up"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 9), 100, buttonWidth, 125, "#ffff00", 2, "Tilt Head Down")]
         # self.canvas.create_text(self.buttons[0].x, self.buttons[0].y, text="Forward")
 
         # the actions for the robot to execute
         self.actions = []
 
         # button to start sequence
-        self.startButton = ActionButton(self.canvas, self.screenWidth / 2, self.screenHeight - 100, 100, 50,
+        self.startButton = ActionButton(self.canvas, self.screenWidth / 2, self.screenHeight - 50, 100, 50,
                                         "#12FF1A", None, "Start")
 
     def run_program(self):
