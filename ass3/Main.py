@@ -46,7 +46,12 @@ class Main:
     def run_program(self):
         for box in self.boxes:
             if box.action is not None:
-                box.action.run()
+                box.action.set_active(self.canvas, True)  # set the action to be active
+                box.action.run()        # run action
+
+        for box in self.boxes:
+            if box.action is not None:
+                box.action.set_active(self.canvas, False)  # set all actions to inactive
         print()
 
     def mouse_pressed(self, event):

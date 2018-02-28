@@ -10,15 +10,16 @@ class Action:
         self.height = height
         self.clicked = False  # if the action is currently clicked
         self.color = color  # color of action rectangle
-        self.icon = canvas.create_rectangle(self.x - self.width / 2, self.y - self.height / 2, self.x + self.width / 2,
-                                            self.y + self.height / 2, fill=color, width=5)
-        self.text = canvas.create_text(self.x, self.y - 7, text=text)  # name of action
-        self.label = None  # shows current setting
         self.setting = 0  # how long or how many degrees to do action for
         self.settingStep = 0  # how much to decrease or increase setting per button press
         self.settingType = None  # duration or degrees
         self.settingMin = 0  # minimum setting
         self.settingMax = 0  # maximum setting
+
+        self.icon = canvas.create_rectangle(self.x - self.width / 2, self.y - self.height / 2, self.x + self.width / 2,
+                                            self.y + self.height / 2, fill=color, width=5)
+        self.text = canvas.create_text(self.x, self.y - 7, text=text)  # name of action
+        self.label = None  # shows current setting
         self.buttonUp = canvas.create_polygon(self.x - 20, self.y - 20, self.x + 20, self.y - 20, self.x, self.y - 50,
                                               fill='black')  # up button for adjusting setting
         self.buttonDown = canvas.create_polygon(self.x - 20, self.y + 20, self.x + 20, self.y + 20, self.x, self.y + 50,
@@ -65,6 +66,24 @@ class Action:
         # create new label
         self.label = canvas.create_text(self.x, self.y + 7, text=str(self.setting) + " " + self.settingType)
 
+    # set border color to yellow or black
+    def set_active(self, canvas, flag):
+        canvas.delete(self.icon)  # delete old icon
+        # create new icon
+        if flag:  # if active set border to yellow
+            self.icon = canvas.create_rectangle(self.x - self.width / 2, self.y - self.height / 2,
+                                                self.x + self.width / 2, self.y + self.height / 2,
+                                                fill=self.color, outline="#ffd700", width=5)
+        else:  # if inactive set border to black
+            self.icon = canvas.create_rectangle(self.x - self.width / 2, self.y - self.height / 2,
+                                                self.x + self.width / 2, self.y + self.height / 2,
+                                                fill=self.color, outline="black", width=5)
+        canvas.tag_raise(self.text)  # move other parts of action to top of icon
+        canvas.tag_raise(self.label)
+        canvas.tag_raise(self.buttonUp)
+        canvas.tag_raise(self.buttonDown)
+        canvas.update_idletasks()
+
     def destroy(self, canvas):
         canvas.delete(self.icon)  # delete action if not in box
         canvas.delete(self.text)
@@ -86,7 +105,7 @@ class MoveAction(Action):
         self.label = canvas.create_text(self.x, self.y + 7, text=str(self.setting) + " " + self.settingType)
 
     def run(self):
-        # time.sleep(5)
+        time.sleep(self.setting)
         if self.namePlate == "Move Forward":
             print("Move Forward")
         elif self.namePlate == "Move Backward":
