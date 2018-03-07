@@ -65,7 +65,7 @@ class Action:
 
         canvas.delete(self.label)  # delete old label
         # create new label
-        self.label = canvas.create_text(self.x, self.y + 7, text=str(self.setting) + " " + self.settingType)
+        self.label = canvas.create_text(self.x, self.y + 7, text=str("{0:.2f}".format(self.setting)) + " " + self.settingType)
 
     # set border color to yellow or black
     def set_active(self, canvas, flag):
@@ -99,11 +99,13 @@ class MoveAction(Action):
         self.color = color
         self.namePlate = text  # had to be different from text otherwise it broke
         self.setting = 1.0
-        self.settingStep = 0.25
+        self.settingStep = 0.05
         self.settingType = "seconds"
         self.settingMin = self.settingStep
         self.settingMax = 10
-        self.label = canvas.create_text(self.x, self.y + 7, text=str(self.setting) + " " + self.settingType)
+        speed =  "{0:.2f}".format(self.setting)
+        print(speed)
+        self.label = canvas.create_text(self.x, self.y + 7, text=str(speed) + " " + self.settingType)
 
     def run(self):
         time.sleep(.5)
