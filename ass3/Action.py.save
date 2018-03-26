@@ -65,7 +65,7 @@ class Action:
 
         canvas.delete(self.label)  # delete old label
         # create new label
-        self.label = canvas.create_text(self.x, self.y + 7, text=str("{0:.2f}".format(self.setting)) + " " + self.settingType)
+        self.label = canvas.create_text(self.x, self.y + 7, text=str(self"{0:.2f}".format(a).setting) + " " + self.settingType)
 
     # set border color to yellow or black
     def set_active(self, canvas, flag):
