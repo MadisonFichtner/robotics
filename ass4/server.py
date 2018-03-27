@@ -2,37 +2,66 @@
 
 import socket
 import sys
+from threading import Thread
 
-# Create a TCP/IP socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+class Server:
 
-# Bind the socket to the port
-server_address = ('10.200.48.152', 8080)
-print('starting up on {} port {}'.format(*server_address))
-sock.bind(server_address)
+	def __init__(self):
+		# Create a TCP/IP socket
+		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		
+		# Bind the socket to the port
+		server_address = ('192.168.0.165', 1000)
+		print('starting up on {} port {}'.format(*server_address))
+		self.sock.bind(server_address)
 
-# Listen for incoming connections
-sock.listen(1)
+		# Listen for incoming connections
+		self.sock.listen(1)
 
-while True:
-    # Wait for a connection
-    print('waiting for a connection')
-    connection, client_address = sock.accept()
-    try:
-        print('connection from', client_address)
+		self.message = 'goodbye'
 
-        # Receive the data in small chunks and retransmit it
-        while True:
-            data = connection.recv(16)
-            print('received {!r}'.format(data))
-            if data:
-                print('sending data back to the client')
-                connection.sendall(data)
-            else:
-                print('no data from', client_address)
-                break
+	def write(self):
+		try:
+			while True:
+				if self.message != "":
+					self.connection.send((self.message + '\n').encode())
+					self.message = ""
+		finally:
+			self.connection.close
+			
+	def read(self):
+		try:
+			while True:
+				data = self.connection.recv(256).decode()
+				print('received {}'.format(data))
+		finally:
+			self.connection.close
+			
+	def input(self):
+		while True:
+			self.message = input()
 
-    finally:
-        # Clean up the connection
-        connection.close()
+	def run(self):
+		# Wait for a connection
+		print('waiting for a connection')
+		self.connection, self.client_address = self.sock.accept()
+		self.message = 'goodbye'
+		try:
+			print('connection from', self.client_address)
+			readThread = Thread(target=self.read)
+			writeThread = Thread(target=self.write)
+			inputThread = Thread(target=self.input)
+			
+			readThread.start()
+			writeThread.start()
+			inputThread.start()
+			
+			readThread.join()
+			writeThread.join()
+			inputThread.join()
+		finally:
+			# Clean up the connection
+			self.connection.close()
 
+server = Server();
+server.run();

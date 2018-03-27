@@ -7,13 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.Socket;
-import java.net.SocketAddress;
 import java.util.Locale;
-
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
     TextToSpeech t1;
@@ -36,33 +30,20 @@ public class MainActivity extends Activity {
             }
         });
 
+        final Client client = new Client(t1);
+        client.start();
+
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String toSpeak = ed1.getText().toString();
-                Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
-                t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+                speak(toSpeak);
+                client.write(toSpeak);
             }
         });
-
-        Client client = new Client();
-        client.start();
     }
 
-    public void connect() {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Socket s = new Socket("10.200.48.152", 8080);
-                    s.getOutputStream().write("hi".getBytes());
-                    s.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        Thread thread = new Thread(runnable);
-        thread.start();
+    public void speak(String message) {
+        t1.speak(message, TextToSpeech.QUEUE_FLUSH, null);
     }
 }

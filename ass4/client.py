@@ -5,7 +5,7 @@ import sys
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Connect the socket to the port where the server is listening
-server_address = ('192.0.0.1', 10000)
+server_address = ('192.168.0.165', 8080)
 print('connecting to {} port {}'.format(*server_address))
 sock.connect(server_address)
 
