@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Tango.iml" filepath="$PROJECT_DIR$/Tango.iml" />
-      <module fileurl="file://D:\College17-18\robotics\ass4\Tango\Tango.iml" filepath="D:\College17-18\robotics\ass4\Tango\Tango.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\College17-18\robotics\ass4\Tango\app\app.iml" filepath="D:\College17-18\robotics\ass4\Tango\app\app.iml" />
     </modules>
   </component>
 </project>

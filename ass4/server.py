@@ -18,8 +18,6 @@ class Server:
 		# Listen for incoming connections
 		self.sock.listen(1)
 
-		self.message = 'goodbye'
-
 	def write(self):
 		try:
 			while True:
