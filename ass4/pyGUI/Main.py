@@ -2,6 +2,7 @@ import tkinter as tk
 import Action
 from ActionBox import ActionBox
 from ActionButton import ActionButton
+from Server import Server
 
 
 class Main:
@@ -53,6 +54,11 @@ class Main:
         # button to start sequence
         self.startButton = ActionButton(self.canvas, self.screenWidth / 2, self.screenHeight - 50, 100, 50,
                                         "#12FF1A", None, "Start")
+										
+		server = Server()
+		server.run()
+										
+		
 
     def run_program(self):
         for box in self.boxes:
