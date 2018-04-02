@@ -11,7 +11,7 @@ class Server:
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		
 		# Bind the socket to the port
-		server_address = ('192.168.0.165', 1000)
+		server_address = ('10.200.10.163', 1000)
 		print('starting up on {} port {}'.format(*server_address))
 		self.sock.bind(server_address)
 
