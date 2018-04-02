@@ -1,14 +1,18 @@
 import tkinter as tk
+from threading import Thread
+import socket
+import sys
 import Action
 from ActionBox import ActionBox
 from ActionButton import ActionButton
 from Server import Server
 
 
-class Main:
-    def __init__(self):
+class GUI:
+    def __init__(self, server):
         self.screenWidth = 770
         self.screenHeight = 460
+        self.server = server
 
         self.win = tk.Tk()
         self.canvas = tk.Canvas(self.win, bg="#333333", width=str(self.screenWidth), height=str(self.screenHeight))
@@ -25,27 +29,28 @@ class Main:
                 ActionBox(self.canvas, 50 + i * (self.screenWidth / 8), self.screenHeight / 1.5, 100, 125))
 
         buttonWidth = ((self.screenWidth) / 10)
+        buttonHeight = 50
         # buttons to pick up an action
-        self.buttons = [ActionButton(self.canvas, buttonWidth / 2, 100, buttonWidth, 125, "#1568C5", 0, "Move Forward"),
-                        ActionButton(self.canvas, buttonWidth / 2 + buttonWidth, 100, buttonWidth, 125, "#1568C5", 0, "Move Backward"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 2), 0, buttonWidth, 125, "#ff0000", 0, "Turn Left"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 3), 0, buttonWidth, 125, "#ff0000", 0, "Turn Right"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 4), 0, buttonWidth, 125, "#ffffff", 1, "Turn Body Left"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 5), 0, buttonWidth, 125, "#ffffff", 1, "Turn Body Right"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 6), 0, buttonWidth, 125, "#cc0099", 2, "Turn Head Left"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 7), 0, buttonWidth, 125, "#cc0099", 2, "Turn Head Right"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 8), 0, buttonWidth, 125, "#ffff00", 2, "Tilt Head Up"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 9), 0, buttonWidth, 125, "#ffff00", 2, "Tilt Head Down"),
-                        ActionButton(self.canvas, buttonWidth / 2, 150, buttonWidth, 125, "#ffffff", 3, "Say: Hello"),
-                        ActionButton(self.canvas, buttonWidth / 2 + buttonWidth, 150, buttonWidth, 125, "#ffffff", 3, "Say: Beep Boop Beep"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 2), 150, buttonWidth, 125, "#cc0099", 3, "Say: What is Life"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 3), 150, buttonWidth, 125, "#cc0099", 3, "Say: Goodbye"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 4), 150, buttonWidth, 125, "#ffff00", 3, "Say: Destroy all Humans"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 5), 150, buttonWidth, 125, "#ffffff", 4, "Listen: Start"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 6), 150, buttonWidth, 125, "#ffffff", 4, "Listen: Continue"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 7), 150, buttonWidth, 125, "#cc0099", 4, "Listen: Go Home"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 8), 150, buttonWidth, 125, "#cc0099", 4, "Listen: Fuck Off"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 9), 150, buttonWidth, 125, "#ffff00", 4, "Listen: Shit")]
+        self.buttons = [ActionButton(self.canvas, buttonWidth / 2, 25, buttonWidth, buttonHeight, "#1568C5", 0, "Move Forward"),
+                        ActionButton(self.canvas, buttonWidth / 2 + buttonWidth, 25, buttonWidth, buttonHeight, "#1568C5", 0, "Move Backward"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 2), 25, buttonWidth, buttonHeight, "#ff0000", 0, "Turn Left"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 3), 25, buttonWidth, buttonHeight, "#ff0000", 0, "Turn Right"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 4), 25, buttonWidth, buttonHeight, "#ffffff", 1, "Turn Body Left"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 5), 25, buttonWidth, buttonHeight, "#ffffff", 1, "Turn Body Right"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 6), 25, buttonWidth, buttonHeight, "#cc0099", 2, "Turn Head Left"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 7), 25, buttonWidth, buttonHeight, "#cc0099", 2, "Turn Head Right"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 8), 25, buttonWidth, buttonHeight, "#ffff00", 2, "Tilt Head Up"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 9), 25, buttonWidth, buttonHeight, "#ffff00", 2, "Tilt Head Down"),
+                        ActionButton(self.canvas, buttonWidth / 2, 150, buttonWidth, buttonHeight, "#ffffff", 3, "Say: Hello"),
+                        ActionButton(self.canvas, buttonWidth / 2 + buttonWidth, 150, buttonWidth, buttonHeight, "#ffffff", 3, "Say: Beep Boop Beep"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 2), 150, buttonWidth, buttonHeight, "#cc0099", 3, "Say: What is Life"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 3), 150, buttonWidth, buttonHeight, "#cc0099", 3, "Say: Goodbye"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 4), 150, buttonWidth, buttonHeight, "#ffff00", 3, "Say: Destroy all Humans"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 5), 150, buttonWidth, buttonHeight, "#ffffff", 4, "Listen: Start"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 6), 150, buttonWidth, buttonHeight, "#ffffff", 4, "Listen: Continue"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 7), 150, buttonWidth, buttonHeight, "#cc0099", 4, "Listen: Go Home"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 8), 150, buttonWidth, buttonHeight, "#cc0099", 4, "Listen: Fuck Off"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 9), 150, buttonWidth, buttonHeight, "#ffff00", 4, "Listen: Shit")]
         # self.canvas.create_text(self.buttons[0].x, self.buttons[0].y, text="Forward")
 
         # the actions for the robot to execute
@@ -53,11 +58,7 @@ class Main:
 
         # button to start sequence
         self.startButton = ActionButton(self.canvas, self.screenWidth / 2, self.screenHeight - 50, 100, 50,
-                                        "#12FF1A", None, "Start")
-										
-		server = Server()
-		server.run()
-										
+                                        "#12FF1A", None, "Start")										
 		
 
     def run_program(self):
@@ -85,10 +86,10 @@ class Main:
                     action = Action.HeadAction(self.canvas, button.x, button.y, 100, 125, button.color,
                                                button.textString)
                 elif button.bType == 3:
-                    action = Action.VoiceAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)
+                    action = Action.VoiceAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString, self.server)
 
                 elif button.bType == 4:
-                    action = Action.ListenAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString)
+                    action = Action.ListenAction(self.canvas, button.x, button.y, 100, 125, button.color, button.textString, self.server)
 
                 action.clicked = True  # set that the action has been clicked
                 self.actions.append(action)  # add action to list
@@ -134,6 +135,69 @@ class Main:
                     self.actions.remove(action)
                 action.clicked = False  # set that the action is no longer clicked
 
+class Main:
 
-m = Main()
-m.win.mainloop()
+    def __init__(self):
+	# Create a TCP/IP socket
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	# Bind the socket to the port
+        server_address = ('10.200.49.223', 2000)
+        ('starting up on {} port {}'.format(*server_address))
+        self.sock.bind(server_address)
+
+	# Listen for incoming connections
+        self.sock.listen(1)
+
+    def create_gui(self):
+        gui = GUI(self)
+        gui.win.mainloop()
+
+    def write_message(self, message):
+        self.message = message
+	
+    def write(self):
+            try:
+                    while True:
+                            if self.message != "":
+                                    self.connection.send((self.message + '\n').encode())
+                                    self.message = ""
+            finally:
+                    self.connection.close
+                    
+    def read(self):
+            try:
+                    while True:
+                            data = self.connection.recv(256).decode()
+                            print('received {}'.format(data))
+            finally:
+                    self.connection.close
+                    
+    def run(self):
+            # Wait for a connection
+            guiThread = Thread(target=self.create_gui)
+            guiThread.start()
+            print('waiting for a connection')
+            self.connection, self.client_address = self.sock.accept()
+            self.message = 'goodbye'
+            try:
+                    print('connection from', self.client_address)
+                    readThread = Thread(target=self.read)
+                    writeThread = Thread(target=self.write)
+
+                    
+                    readThread.start()
+                    writeThread.start()
+
+                    readThread.join()
+                    writeThread.join()
+                    
+            finally:
+                    # Clean up the connection
+                    self.connection.close()
+
+main = Main()
+main.run()
+
+    
+
+

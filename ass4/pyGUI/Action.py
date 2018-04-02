@@ -93,26 +93,57 @@ class Action:
         canvas.delete(self.buttonDown)
 
 class VoiceAction(Action):
-    def __init__(self, canvas, x, y, width, height, color, text):
+    def __init__(self, canvas, x, y, width, height, color, text, server):
         super().__init__(canvas, x, y, width, height, color, text)
-
+        self.color = color
+        self.namePlate = text  # had to be different from text otherwise it broke
+        self.setting = 1.0
+        self.settingStep = 0.05
+        self.settingType = "seconds"
+        self.settingMin = self.settingStep
+        self.settingMax = 10
+        speed =  "{0:.2f}".format(self.setting)
+        print(speed)
+        self.label = canvas.create_text(self.x, self.y + 7, text=str(speed) + " " + self.settingType)
+        self.server = server
+        
     def run(self):
         if self.namePlate == "Say: Hello":
+            self.server.write_message("hello")
         elif self.namePlate == "Say: Beep Boop Beep":
+            print("hello")
         elif self.namePlate == "Say: What is Life":
+            print("hello")
         elif self.namePlate == "Say: Goodbye":
+            print("hello")
         elif self.namePlate == "Say: Destroy all Humans":
+            print("hello")
 
 class ListenAction(Action):
-    def __init__(self, canvas, x, y, width, height, color, text):
+    def __init__(self, canvas, x, y, width, height, color, text, server):
         super().__init__(canvas, x, y, width, height, color, text)
+        self.color = color
+        self.namePlate = text  # had to be different from text otherwise it broke
+        self.setting = 1.0
+        self.settingStep = 0.05
+        self.settingType = "seconds"
+        self.settingMin = self.settingStep
+        self.settingMax = 10
+        speed =  "{0:.2f}".format(self.setting)
+        print(speed)
+        self.label = canvas.create_text(self.x, self.y + 7, text=str(speed) + " " + self.settingType)
 
     def run(self):
         if self.namePlate == "Listen: Start":
+            print("hello")
         elif self.namePlate == "Listen: Continue":
+            print("hello")
         elif self.namePlate == "Listen: Go Home":
+            print("hello")
         elif self.namePlate == "Listen: Fuck Off":
+            print("hello")
         elif self.namePlate == "Listen: Shit":
+            print("hello")
 
 class MoveAction(Action):
     def __init__(self, canvas, x, y, width, height, color, text):
