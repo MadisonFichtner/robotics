@@ -19,7 +19,7 @@ class Action:
 
         self.icon = canvas.create_rectangle(self.x - self.width / 2, self.y - self.height / 2, self.x + self.width / 2,
                                             self.y + self.height / 2, fill=color, width=5)
-        self.text = canvas.create_text(self.x, self.y - 7, text=text)  # name of action
+        self.text = canvas.create_text(self.x, self.y - 7, text=text, width=self.width-5, justify='center')  # name of action
         self.label = None  # shows current setting
         self.buttonUp = canvas.create_polygon(self.x - 20, self.y - 20, self.x + 20, self.y - 20, self.x, self.y - 50,
                                               fill='black')  # up button for adjusting setting
@@ -32,9 +32,10 @@ class Action:
     def move(self, canvas, x, y):
         canvas.move(self.icon, x - self.x, y - self.y)
         canvas.move(self.text, x - self.x, y - self.y)
-        canvas.move(self.label, x - self.x, y - self.y)
-        canvas.move(self.buttonUp, x - self.x, y - self.y)
-        canvas.move(self.buttonDown, x - self.x, y - self.y)
+        if(self.label is not None):
+            canvas.move(self.label, x - self.x, y - self.y)
+            canvas.move(self.buttonUp, x - self.x, y - self.y)
+            canvas.move(self.buttonDown, x - self.x, y - self.y)
         self.x = x
         self.y = y
 
@@ -80,9 +81,10 @@ class Action:
                                                 self.x + self.width / 2, self.y + self.height / 2,
                                                 fill=self.color, outline="black", width=5)
         canvas.tag_raise(self.text)  # move other parts of action to top of icon
-        canvas.tag_raise(self.label)
-        canvas.tag_raise(self.buttonUp)
-        canvas.tag_raise(self.buttonDown)
+        if(self.label is not None):
+            canvas.tag_raise(self.label)
+            canvas.tag_raise(self.buttonUp)
+            canvas.tag_raise(self.buttonDown)
         canvas.update_idletasks()
 
     def destroy(self, canvas):
@@ -103,21 +105,29 @@ class VoiceAction(Action):
         self.settingMin = self.settingStep
         self.settingMax = 10
         speed =  "{0:.2f}".format(self.setting)
-        print(speed)
-        self.label = canvas.create_text(self.x, self.y + 7, text=str(speed) + " " + self.settingType)
+        self.label = None
+        canvas.delete(self.buttonUp)
+        canvas.delete(self.buttonDown)
+        self.buttonUp = None
+        self.buttonDown = None
         self.server = server
         
     def run(self):
         if self.namePlate == "Say: Hello":
             self.server.write_message("hello")
+            time.sleep(1)
         elif self.namePlate == "Say: Beep Boop Beep":
-            print("hello")
-        elif self.namePlate == "Say: What is Life":
-            print("hello")
+            self.server.write_message("beep boop beep")
+            time.sleep(1)
+        elif self.namePlate == "Say: What is Love?":
+            self.server.write_message("What is love. Baby don't hurt me. Don't hurt me. No more.")
+            time.sleep(6)
         elif self.namePlate == "Say: Goodbye":
-            print("hello")
+            self.server.write_message("goodbye")
+            time.sleep(1)
         elif self.namePlate == "Say: Destroy all Humans":
-            print("hello")
+            self.server.write_message("destroy all humans")
+            time.sleep(1.5)
 
 class ListenAction(Action):
     def __init__(self, canvas, x, y, width, height, color, text, server):
@@ -130,20 +140,36 @@ class ListenAction(Action):
         self.settingMin = self.settingStep
         self.settingMax = 10
         speed =  "{0:.2f}".format(self.setting)
-        print(speed)
-        self.label = canvas.create_text(self.x, self.y + 7, text=str(speed) + " " + self.settingType)
+        self.label = None
+        canvas.delete(self.buttonUp)
+        canvas.delete(self.buttonDown)
+        self.buttonUp = None
+        self.buttonDown = None
+        self.server = server
 
     def run(self):
         if self.namePlate == "Listen: Start":
-            print("hello")
+            self.listenFor("start")
         elif self.namePlate == "Listen: Continue":
-            print("hello")
+            self.listenFor("continue")
         elif self.namePlate == "Listen: Go Home":
-            print("hello")
-        elif self.namePlate == "Listen: Fuck Off":
-            print("hello")
-        elif self.namePlate == "Listen: Shit":
-            print("hello")
+            self.listenFor("go home")
+        elif self.namePlate == "Listen: Dance":
+            self.listenFor("dance")
+        elif self.namePlate == "Listen: Play":
+            self.listenFor("play")
+
+    def listenFor(self, word):
+        self.server.write_message("%listen")
+        done = False
+        while(not done):           
+            if(word in self.server.received):
+                done = True
+                self.server.received = ""
+            elif(self.server.received != ""):
+                self.server.write_message("%listen")
+                self.server.received = ""
+        
 
 class MoveAction(Action):
     def __init__(self, canvas, x, y, width, height, color, text):
@@ -156,7 +182,6 @@ class MoveAction(Action):
         self.settingMin = self.settingStep
         self.settingMax = 10
         speed =  "{0:.2f}".format(self.setting)
-        print(speed)
         self.label = canvas.create_text(self.x, self.y + 7, text=str(speed) + " " + self.settingType)
 
     def run(self):

@@ -41,16 +41,16 @@ class GUI:
                         ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 7), 25, buttonWidth, buttonHeight, "#cc0099", 2, "Turn Head Right"),
                         ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 8), 25, buttonWidth, buttonHeight, "#ffff00", 2, "Tilt Head Up"),
                         ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 9), 25, buttonWidth, buttonHeight, "#ffff00", 2, "Tilt Head Down"),
-                        ActionButton(self.canvas, buttonWidth / 2, 150, buttonWidth, buttonHeight, "#ffffff", 3, "Say: Hello"),
-                        ActionButton(self.canvas, buttonWidth / 2 + buttonWidth, 150, buttonWidth, buttonHeight, "#ffffff", 3, "Say: Beep Boop Beep"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 2), 150, buttonWidth, buttonHeight, "#cc0099", 3, "Say: What is Life"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 3), 150, buttonWidth, buttonHeight, "#cc0099", 3, "Say: Goodbye"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 4), 150, buttonWidth, buttonHeight, "#ffff00", 3, "Say: Destroy all Humans"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 5), 150, buttonWidth, buttonHeight, "#ffffff", 4, "Listen: Start"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 6), 150, buttonWidth, buttonHeight, "#ffffff", 4, "Listen: Continue"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 7), 150, buttonWidth, buttonHeight, "#cc0099", 4, "Listen: Go Home"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 8), 150, buttonWidth, buttonHeight, "#cc0099", 4, "Listen: Fuck Off"),
-                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 9), 150, buttonWidth, buttonHeight, "#ffff00", 4, "Listen: Shit")]
+                        ActionButton(self.canvas, buttonWidth / 2, 150, buttonWidth, buttonHeight, "#1568C5", 3, "Say: Hello"),
+                        ActionButton(self.canvas, buttonWidth / 2 + buttonWidth, 150, buttonWidth, buttonHeight, "#1568C5", 3, "Say: Beep Boop Beep"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 2), 150, buttonWidth, buttonHeight, "#1568C5", 3, "Say: What is Love?"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 3), 150, buttonWidth, buttonHeight, "#1568C5", 3, "Say: Goodbye"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 4), 150, buttonWidth, buttonHeight, "#1568C5", 3, "Say: Destroy all Humans"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 5), 150, buttonWidth, buttonHeight, "#00ff00", 4, "Listen: Start"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 6), 150, buttonWidth, buttonHeight, "#00ff00", 4, "Listen: Continue"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 7), 150, buttonWidth, buttonHeight, "#00ff00", 4, "Listen: Go Home"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 8), 150, buttonWidth, buttonHeight, "#00ff00", 4, "Listen: Dance"),
+                        ActionButton(self.canvas, buttonWidth / 2 + (buttonWidth * 9), 150, buttonWidth, buttonHeight, "#00ff00", 4, "Listen: Play")]
         # self.canvas.create_text(self.buttons[0].x, self.buttons[0].y, text="Forward")
 
         # the actions for the robot to execute
@@ -70,7 +70,6 @@ class GUI:
         for box in self.boxes:
             if box.action is not None:
                 box.action.set_active(self.canvas, False)  # set all actions to inactive
-        print()
 
     def mouse_pressed(self, event):
         for button in self.buttons:
@@ -147,6 +146,7 @@ class Main:
 
 	# Listen for incoming connections
         self.sock.listen(1)
+        self.received = ""
 
     def create_gui(self):
         gui = GUI(self)
@@ -167,8 +167,8 @@ class Main:
     def read(self):
             try:
                     while True:
-                            data = self.connection.recv(256).decode()
-                            print('received {}'.format(data))
+                            self.received = self.connection.recv(256).decode()
+                           
             finally:
                     self.connection.close
                     
