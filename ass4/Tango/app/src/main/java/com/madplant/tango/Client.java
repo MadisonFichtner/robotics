@@ -1,6 +1,5 @@
 package com.madplant.tango;
 
-import android.app.Activity;
 import android.speech.tts.TextToSpeech;
 
 import java.io.BufferedReader;
@@ -27,7 +26,7 @@ public class Client extends Thread{
     @Override
     public void run() {
         try {
-            socket = new Socket("10.200.10.163", 1000);
+            socket = new Socket("10.200.49.223", 2000);
             out = new PrintWriter(socket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ReadThread readThread = new ReadThread();
@@ -60,14 +59,17 @@ public class Client extends Thread{
         disconnect();
     }
 
+    // text to speech
     private void speak(String message) {
         t1.speak(message, TextToSpeech.QUEUE_FLUSH, null);
     }
 
+    // set message to send to pi
     void write(String message) {
         this.message = message;
     }
 
+    // disconnect from server
     private void disconnect() {
         try {
             socket.close();
@@ -88,9 +90,11 @@ public class Client extends Thread{
                 try {
                     String message = in.readLine();
                     System.out.println(message);
+                    //start voice recognition if the message is "%listen"
                     if(message.equals("%listen")) {
                         activity.startVoiceRecognitionActivity();
                     }
+                    //otherwise just speak the message
                     else {
                         speak(message);
                     }

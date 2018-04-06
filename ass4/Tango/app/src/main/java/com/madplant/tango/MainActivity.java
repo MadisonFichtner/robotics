@@ -1,9 +1,7 @@
 package com.madplant.tango;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
@@ -12,10 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends Activity {
@@ -38,6 +34,7 @@ public class MainActivity extends Activity {
         b2 = findViewById(R.id.button2);
         list = findViewById(R.id.list);
 
+        //create text to speech
         t1 = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -47,9 +44,11 @@ public class MainActivity extends Activity {
             }
         });
 
+        //create and start client
         client = new Client(t1, this);
         client.start();
 
+        //set listener for button to speak inputted text
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,6 +58,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        //set listener for button to start voice recognition activity
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,10 +67,12 @@ public class MainActivity extends Activity {
         });
     }
 
+    // say the message
     public void speak(String message) {
         t1.speak(message, TextToSpeech.QUEUE_FLUSH, null);
     }
 
+    // start google services voice recognition
     public void startVoiceRecognitionActivity() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
@@ -80,6 +82,7 @@ public class MainActivity extends Activity {
         startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
     }
 
+    // get the result of voice recognition activity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
