@@ -16,10 +16,6 @@ import java.util.Locale;
 
 public class MainActivity extends Activity {
     TextToSpeech t1;
-    EditText ed1;
-    Button b1;
-    Button b2;
-    ListView list;
 
     Client client;
 
@@ -29,10 +25,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ed1 = findViewById(R.id.editText);
-        b1 = findViewById(R.id.button);
-        b2 = findViewById(R.id.button2);
-        list = findViewById(R.id.list);
 
         //create text to speech
         t1 = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -47,24 +39,6 @@ public class MainActivity extends Activity {
         //create and start client
         client = new Client(t1, this);
         client.start();
-
-        //set listener for button to speak inputted text
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String toSpeak = ed1.getText().toString();
-                speak(toSpeak);
-                client.write(toSpeak);
-            }
-        });
-
-        //set listener for button to start voice recognition activity
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startVoiceRecognitionActivity();
-            }
-        });
     }
 
     // say the message
@@ -87,7 +61,6 @@ public class MainActivity extends Activity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
             ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            list.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, matches));
             client.write(matches.get(0));
         }
     }

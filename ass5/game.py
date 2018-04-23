@@ -37,7 +37,7 @@ class Game:
         self.server.write_message("say start to begin")
         time.sleep(1)
 
-        self.listenFor("start")
+        self.listenForAnything()
 
         self.player.node.action()
         while not self.player.done:
@@ -46,16 +46,13 @@ class Game:
 
         sys.exit()
 
-    def listenFor(self, word):
+    # listen for any word
+    def listenForAnything(self):
         self.server.write_message("%listen")
-        done = False
-        while not done:
-            if word in self.server.received:
-                done = True
-                self.server.received = ""
-            elif self.server.received != "":
-                self.server.write_message("%listen")
-                self.server.received = ""
+
+        while self.server.received == "":
+            pass
+        self.server.received = ""
 
 
 class Main:
@@ -102,7 +99,7 @@ class Main:
         guiThread.start()
         print('waiting for a connection')
         self.connection, self.client_address = self.sock.accept()
-        self.message = 'goodbye'
+        self.message = ""
         try:
             print('connection from', self.client_address)
             readThread = Thread(target=self.read)

@@ -32,7 +32,7 @@ class Player:
                     self.node = self.node.east
                 else:
                     valid = False
-            elif selection == "South":
+            elif selection == "South" or selection == "self":
                 if self.node.south is not None:
                     self.node = self.node.south
                 else:

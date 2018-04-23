@@ -36,6 +36,8 @@ class Node:
         print(string)
         self.server.write_message(string)
         time.sleep(3)
+        self.server.write_message("Where should I go?")
+        time.sleep(1.5)
 
 
 class EnemyNode(Node):
@@ -55,10 +57,13 @@ class EnemyNode(Node):
 
 class HealthNode(Node):
     def __init__(self, game, server):
+        self.used = False
         super().__init__(game, server)
 
     def action(self):
-        self.game.player.heal()
+        if not self.used:
+            self.game.player.heal()
+            self.used = True
         super().action()
 
 
