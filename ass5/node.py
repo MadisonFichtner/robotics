@@ -1,26 +1,46 @@
+import time
+
 class Node:
-    def __init__(self, game):
+    def __init__(self, game, server):
         self.game = game
+        self.server = server
         self.north = None
         self.east = None
         self.south = None
         self.west = None
 
     def action(self):
-        print("\nPaths:")
+        directions = []
+        string = ""
         if self.north is not None:
-            print("\tNorth")
+            directions.append("north")
         if self.east is not None:
-            print("\tEast")
+            directions.append("east")
         if self.south is not None:
-            print("\tSouth")
+            directions.append("south")
         if self.west is not None:
-            print("\tWest")
+            directions.append("west")
+
+        if len(directions) is 1:
+            string = "I see a path to the " + directions[0]
+        elif len(directions) is 2:
+            string = "I see paths to the " + directions[0] + " and " + directions[1]
+            time.sleep(1)
+        elif len(directions) is 3:
+            string = "I see paths to the " + directions[0] + " " + directions[1] + " and " + directions[2]
+            time.sleep(1)
+        elif len(directions) is 4:
+            string = "I see paths to the " + directions[0] + " " + directions[1] + " " + directions[2] + " and " + \
+                     directions[3]
+
+        print(string)
+        self.server.write_message(string)
+        time.sleep(3)
 
 
 class EnemyNode(Node):
-    def __init__(self, game, hasKey):
-        super().__init__(game)
+    def __init__(self, game, hasKey, server):
+        super().__init__(game, server)
         self.alive = True
         self.hasKey = hasKey
 
@@ -34,8 +54,8 @@ class EnemyNode(Node):
 
 
 class HealthNode(Node):
-    def __init__(self, game):
-        super().__init__(game)
+    def __init__(self, game, server):
+        super().__init__(game, server)
 
     def action(self):
         self.game.player.heal()
@@ -43,8 +63,8 @@ class HealthNode(Node):
 
 
 class ChestNode(Node):
-    def __init__(self, game):
-        super().__init__(game)
+    def __init__(self, game, server):
+        super().__init__(game, server)
 
     def action(self):
         self.game.player.openChest()
