@@ -42,7 +42,7 @@ class Node:
 
 class EnemyNode(Node):
     def __init__(self, game, hasKey, server):
-        super().__init__(game, server)
+        super(EnemyNode,self).__init__(game, server)
         self.alive = True
         self.hasKey = hasKey
 
@@ -58,7 +58,7 @@ class EnemyNode(Node):
 class HealthNode(Node):
     def __init__(self, game, server):
         self.used = False
-        super().__init__(game, server)
+        super(HealthNode,self).__init__(game, server)
 
     def action(self):
         if not self.used:
@@ -69,7 +69,7 @@ class HealthNode(Node):
 
 class ChestNode(Node):
     def __init__(self, game, server):
-        super().__init__(game, server)
+        super(ChestNode,self).__init__(game, server)
 
     def action(self):
         self.game.player.openChest()

@@ -1,4 +1,5 @@
 import time
+from Maestro import Controller
 
 class Player:
 
@@ -8,6 +9,9 @@ class Player:
         self.done = False
         self.hp = 100
         self.hasKey = False
+        self.direction = "South"
+        self.control = Controller()
+        self.control.setTarget(1,6000)
 
     def move(self):
         valid = False
@@ -25,26 +29,91 @@ class Player:
             if selection == "North":
                 if self.node.north is not None:
                     self.node = self.node.north
+                    if self.direction == "South":
+                        self.control.setTarget(1, 6000)
+                        self.control.setTarget(2, 5000)
+                        time.sleep(3)
+                        self.control.setTarget(2, 6000)
+                    elif self.direction == "East":
+                        self.control.setTarget(1, 6000)
+                        self.control.setTarget(2, 7000)
+                        time.sleep(1.5)
+                        self.control.setTarget(2, 6000)
+                    elif self.direction == "West":
+                        self.control.setTarget(1, 6000)
+                        self.control.setTarget(2, 5000)
+                        time.sleep(1.5)
+                        self.control.setTarget(2, 6000)
                 else:
                     valid = False
             elif selection == "East":
                 if self.node.east is not None:
                     self.node = self.node.east
+                    if self.direction == "South":
+                        self.control.setTarget(1, 6000)
+                        self.control.setTarget(2, 7000)
+                        time.sleep(1.5)
+                        self.control.setTarget(2, 6000)
+                    elif self.direction == "North":
+                        self.control.setTarget(1, 6000)
+                        self.control.setTarget(2, 5000)
+                        time.sleep(1.5)
+                        self.control.setTarget(2, 6000)
+                    elif self.direction == "West":
+                        self.control.setTarget(1, 6000)
+                        self.control.setTarget(2, 5000)
+                        time.sleep(3)
+                        self.control.setTarget(2, 6000)
                 else:
                     valid = False
             elif selection == "South" or selection == "self":
                 if self.node.south is not None:
                     self.node = self.node.south
+                    if self.direction == "North":
+                        self.control.setTarget(1, 6000)
+                        self.control.setTarget(2, 5000)
+                        time.sleep(3)
+                        self.control.setTarget(2, 6000)
+                    elif self.direction == "East":
+                        self.control.setTarget(1, 6000)
+                        self.control.setTarget(2, 5000)
+                        time.sleep(1.5)
+                        self.control.setTarget(2, 6000)
+                    elif self.direction == "West":
+                        self.control.setTarget(1, 6000)
+                        self.control.setTarget(2, 7000)
+                        time.sleep(1.5)
+                        self.control.setTarget(2, 6000)
                 else:
                     valid = False
             elif selection == "West":
                 if self.node.west is not None:
                     self.node = self.node.west
+                    if self.direction == "South":
+                        self.control.setTarget(1, 6000)
+                        self.control.setTarget(2, 5000)
+                        time.sleep(1.5)
+                        self.control.setTarget(2, 6000)
+                    elif self.direction == "East":
+                        self.control.setTarget(1, 6000)
+                        self.control.setTarget(2, 5000)
+                        time.sleep(3)
+                        self.control.setTarget(2, 6000)
+                    elif self.direction == "North":
+                        self.control.setTarget(1, 6000)
+                        self.control.setTarget(2, 7000)
+                        time.sleep(1.5)
+                        self.control.setTarget(2, 6000)
                 else:
                     valid = False
             else:
                 valid = False
 
+            if valid:
+                self.control.setTarget(1, 4500)
+                time.sleep(0.65)
+                self.control.setTarget(1, 6000)
+                self.direction = selection
             if not valid:
                 print("I can't go that direction")
                 self.server.write_message("I can't go that direction")

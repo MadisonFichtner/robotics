@@ -60,7 +60,7 @@ class Main:
         # Create a TCP/IP socket
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # Bind the socket to the port
-        server_address = ('192.168.0.165', 2000)
+        server_address = ('10.200.1.175', 2000)
         ('starting up on {} port {}'.format(*server_address))
         self.sock.bind(server_address)
         self.connection = None

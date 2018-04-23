@@ -108,7 +108,7 @@ class MoveAction(Action):
         self.label = canvas.create_text(self.x, self.y + 7, text=str(speed) + " " + self.settingType)
 
     def run(self):
-        time.sleep(.5)
+        # time.sleep(.5)
         if self.namePlate == "Move Forward":
             self.control.setTarget(1, 4500)
             time.sleep(self.setting)

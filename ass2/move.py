@@ -17,7 +17,7 @@ class Move:
 
         self.head_pos = 6000
         self.head_step = 1000
-        self.head_tilt = 5000
+        self.head_tilt = 6000
 
         self.speed = 1250
 
@@ -57,11 +57,11 @@ class Move:
                     self.control.setTarget(3, 6000)
                     self.control.setTarget(4, 5000)
                     self.head_pos = 6000
-                    self.head_tilt = 5000
+                    self.head_tilt = 6000
                 elif char == ord('s'):  # reset body
                     self.control.setTarget(0, 6000)
                 elif char == ord('w'):  # reset head
-                    self.control.setTarget(4, 5000)
+                    self.control.setTarget(4, 6000)
                     self.control.setTarget(3, 6000)
                     self.head_pos = 6000
                     self.head_tilt = 5000
